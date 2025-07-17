@@ -1,4 +1,24 @@
 class Solution {
+    
+    public int robRecurse(int[] nums) {
+        // TLE solution
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        return recurse(nums, 0, 0);
+    }
+
+    private int recurse(int[] nums, int index, int amountRobbed) {
+        if (index >= nums.length) {
+            return amountRobbed;
+        }
+
+        int case1 = recurse(nums, index + 1, amountRobbed);
+        int case2 = recurse(nums, index + 2, amountRobbed + nums[index]);
+        return Math.max(case1, case2);
+    }
+
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
@@ -27,6 +47,36 @@ class Solution {
         }
 
         return robbed[n - 1];
+
+    }
+
+    public int robSkipTake(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+        int n = nums.length;
+        
+        int skip = 0;
+        int take = nums[0];
+        /**
+          s t
+        2 0 2
+        7 2 7
+        9 7 11
+        3 11 10
+        1 11 12
+
+         */
+
+
+        for (int i = 1; i < n; ++i) {
+            int tempSkip = skip;
+            skip = Math.max(skip, take);
+            take = tempSkip + nums[i];
+        }
+
+        return Math.max(skip, take);
 
     }
 }
